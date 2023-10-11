@@ -8,14 +8,15 @@ const router = express.Router();
 
 // Create non-repeating event. Reeive values address, image, name, and non-repeating-dates.
 router.post("/create-event", (req, res, next) => {
-  const queryText = `INSERT INTO "event" (address, image, name, non-repeating-dates)
-    VALUES ($1, $2, $3, $4) RETURNING id`;
+  const queryText = `INSERT INTO "event" ("address", "image", "name", "non-repeating-dates", "event-type")
+    VALUES ($1, $2, $3, $4, $5) RETURNING id`;
   pool
     .query(queryText, [
       req.body.address,
       req.body.image,
       req.body.name,
-      req.body.non - repeating - dates,
+      req.body.nonRepeatingDates,
+      "non-repeating"
     ])
     .then(() => res.sendStatus(201))
     .catch((err) => {
@@ -34,7 +35,7 @@ SET
   "name" = $1,
   "image" = $2,
   "address" = $3,
-  "non-repeating-dates" = $4,
+  "non-repeating-dates" = $4
 WHERE "id" = $5
   `;
 
@@ -43,7 +44,7 @@ WHERE "id" = $5
       req.body.name,
       req.body.image,
       req.body.address,
-      req.body.non - repeating - dates,
+      req.body.nonRepeatingDates,
       eventid,
     ])
     .then((result) => {
@@ -112,13 +113,13 @@ router.get("/invite/:invitecode", (req, res) => {
   let invitecode = req.params.invitecode;
 
   const queryText = `
-  SELECT * FROM "booking" WHERE "invite-link" = $1;
+  SELECT "user"."name" AS "parentName", "event"."name" AS "eventName", "address", "non-repeating-dates", "invite-link", "user"."id" AS "userid", "event"."id" AS "eventid" FROM "booking" JOIN "user" ON "user"."id" = "booking"."user-id" JOIN "event" ON "event"."id" = "booking"."event-id" WHERE "invite-link" = $1;
   `;
 
   pool
     .query(queryText, [invitecode])
     .then((result) => {
-      res.sendStatus(200);
+      res.status(200).json(result.rows)
     })
     .catch((err) => {
       console.log(`Error making query ${queryText}`, err);
@@ -130,7 +131,7 @@ router.get("/invite/:invitecode", (req, res) => {
 router.post("/accept/:eventid", (req, res) => {
   let eventid = req.params.eventid;
   const queryText = `
-  INSERT INTO "booking" ("parent-id", "invited-parent-id","event-id")
+  INSERT INTO "invitee" ("parent-id", "invited-parent-id","event-id")
 VALUES ( $1, $2, $3);
   `;
 
@@ -145,7 +146,7 @@ VALUES ( $1, $2, $3);
     });
 });
 // Get event details. Expect event-ID in the req.params.
-router.get("/event/:eventid", (req, res) => {
+router.get("/details/:eventid", (req, res) => {
   let eventid = req.params.eventid
   const queryText = `
   SELECT * FROM "event" WHERE "id" = $1;
@@ -154,7 +155,7 @@ router.get("/event/:eventid", (req, res) => {
   pool
     .query(queryText, [eventid])
     .then((result) => {
-      res.sendStatus(200);
+      res.status(200).json(result.rows);
     })
     .catch((err) => {
       console.log(`Error making query ${queryText}`, err);
