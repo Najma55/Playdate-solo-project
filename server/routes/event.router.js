@@ -15,6 +15,10 @@ router.post("/create-event", rejectUnauthenticated, (req, res, next) => {
     !req.body.nonRepeatingDates
   ) {
     return res.status(400).send("missing field");
+  } 
+  // Check if the logged in user is ad Admin.
+  if (req.user.role!=="admin"){
+    return res.status(403).send("Unauthorized")
   }
   const queryText = `INSERT INTO "event" ("address", "image", "name", "non-repeating-dates", "event-type")
     VALUES ($1, $2, $3, $4, $5) RETURNING id`;
@@ -35,6 +39,9 @@ router.post("/create-event", rejectUnauthenticated, (req, res, next) => {
 
 // Update event. Expect event-ID in req.params and the fields to be edited in the req.body.
 router.put("/:eventid", rejectUnauthenticated, (req, res) => {
+  if (req.user.role!=="admin"){
+    return res.status(403).send("Unauthorized")
+  }
   let eventid = req.params.eventid;
 
   const queryText = `
@@ -65,6 +72,9 @@ WHERE "id" = $5
 });
 // Delete event. Expect event-ID in req.params.
 router.delete("/:eventid", rejectUnauthenticated, (req, res) => {
+  if (req.user.role!=="admin"){
+    return res.status(403).send("Unauthorized")
+  }
   let eventid = req.params.eventid;
 
   const queryText = `
