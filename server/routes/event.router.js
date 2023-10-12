@@ -7,9 +7,14 @@ const pool = require("../modules/pool");
 const router = express.Router();
 
 // Create non-repeating event. Reeive values address, image, name, and non-repeating-dates.
-router.post("/create-event", (req, res, next) => {
-  if(!req.body.address || !req.body.image || !req.body.name || !req.body.nonRepeatingDates){
-    return res.status(400).send("missing field")
+router.post("/create-event", rejectUnauthenticated, (req, res, next) => {
+  if (
+    !req.body.address ||
+    !req.body.image ||
+    !req.body.name ||
+    !req.body.nonRepeatingDates
+  ) {
+    return res.status(400).send("missing field");
   }
   const queryText = `INSERT INTO "event" ("address", "image", "name", "non-repeating-dates", "event-type")
     VALUES ($1, $2, $3, $4, $5) RETURNING id`;
@@ -19,7 +24,7 @@ router.post("/create-event", (req, res, next) => {
       req.body.image,
       req.body.name,
       req.body.nonRepeatingDates,
-      "non-repeating"
+      "non-repeating",
     ])
     .then(() => res.sendStatus(201))
     .catch((err) => {
@@ -29,7 +34,7 @@ router.post("/create-event", (req, res, next) => {
 });
 
 // Update event. Expect event-ID in req.params and the fields to be edited in the req.body.
-router.put("/:eventid", (req, res) => {
+router.put("/:eventid", rejectUnauthenticated, (req, res) => {
   let eventid = req.params.eventid;
 
   const queryText = `
@@ -59,7 +64,7 @@ WHERE "id" = $5
     });
 });
 // Delete event. Expect event-ID in req.params.
-router.delete("/:eventid", (req, res) => {
+router.delete("/:eventid", rejectUnauthenticated, (req, res) => {
   let eventid = req.params.eventid;
 
   const queryText = `
@@ -92,9 +97,9 @@ function generateUniqueCode() {
 }
 
 // Book event. Expect event-ID in the params and user-ID in the req.body.
-router.post("/book/:eventid", (req, res) => {
-  if (!req.body.userID){
-    return res.status(400).send("missing field")
+router.post("/book/:eventid", rejectUnauthenticated, (req, res) => {
+  if (!req.body.userID) {
+    return res.status(400).send("missing field");
   }
   let eventid = req.params.eventid;
   const invitelink = generateUniqueCode();
@@ -115,7 +120,7 @@ VALUES ( $1, $2, $3);
 });
 
 // Get invite details. Expect invite code in the req.params.
-router.get("/invite/:invitecode", (req, res) => {
+router.get("/invite/:invitecode", rejectUnauthenticated, (req, res) => {
   let invitecode = req.params.invitecode;
 
   const queryText = `
@@ -125,7 +130,7 @@ router.get("/invite/:invitecode", (req, res) => {
   pool
     .query(queryText, [invitecode])
     .then((result) => {
-      res.status(200).json(result.rows)
+      res.status(200).json(result.rows);
     })
     .catch((err) => {
       console.log(`Error making query ${queryText}`, err);
@@ -134,9 +139,9 @@ router.get("/invite/:invitecode", (req, res) => {
 });
 
 // Accept invite. Expect event-ID in the req.params and user-ID in the req.body.
-router.post("/accept/:eventid", (req, res) => {
-  if(!req.body.parentID || !req.body.invitedParentID){
-    return res.status(400).send("missing field")
+router.post("/accept/:eventid", rejectUnauthenticated, (req, res) => {
+  if (!req.body.parentID || !req.body.invitedParentID) {
+    return res.status(400).send("missing field");
   }
   let eventid = req.params.eventid;
   const queryText = `
@@ -145,7 +150,7 @@ VALUES ( $1, $2, $3);
   `;
 
   pool
-    .query(queryText, [req.body.parentID,req.body.invitedParentID,eventid])
+    .query(queryText, [req.body.parentID, req.body.invitedParentID, eventid])
     .then((result) => {
       res.sendStatus(200);
     })
@@ -155,8 +160,8 @@ VALUES ( $1, $2, $3);
     });
 });
 // Get event details. Expect event-ID in the req.params.
-router.get("/details/:eventid", (req, res) => {
-  let eventid = req.params.eventid
+router.get("/details/:eventid", rejectUnauthenticated, (req, res) => {
+  let eventid = req.params.eventid;
   const queryText = `
   SELECT * FROM "event" WHERE "id" = $1;
   `;
