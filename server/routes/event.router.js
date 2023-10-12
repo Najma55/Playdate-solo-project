@@ -8,6 +8,9 @@ const router = express.Router();
 
 // Create non-repeating event. Reeive values address, image, name, and non-repeating-dates.
 router.post("/create-event", (req, res, next) => {
+  if(!req.body.address || !req.body.image || !req.body.name || !req.body.nonRepeatingDates){
+    return res.status(400).send("missing field")
+  }
   const queryText = `INSERT INTO "event" ("address", "image", "name", "non-repeating-dates", "event-type")
     VALUES ($1, $2, $3, $4, $5) RETURNING id`;
   pool
@@ -90,6 +93,9 @@ function generateUniqueCode() {
 
 // Book event. Expect event-ID in the params and user-ID in the req.body.
 router.post("/book/:eventid", (req, res) => {
+  if (!req.body.userID){
+    return res.status(400).send("missing field")
+  }
   let eventid = req.params.eventid;
   const invitelink = generateUniqueCode();
   const queryText = `
@@ -129,6 +135,9 @@ router.get("/invite/:invitecode", (req, res) => {
 
 // Accept invite. Expect event-ID in the req.params and user-ID in the req.body.
 router.post("/accept/:eventid", (req, res) => {
+  if(!req.body.parentID || !req.body.invitedParentID){
+    return res.status(400).send("missing field")
+  }
   let eventid = req.params.eventid;
   const queryText = `
   INSERT INTO "invitee" ("parent-id", "invited-parent-id","event-id")
