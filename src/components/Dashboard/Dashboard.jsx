@@ -26,7 +26,7 @@ export default function Dashboard() {
 }
 function EventCard() {
   return (
-    <Link className="eventcard" to="/dashboard">
+    <Link className="eventcard" to="/event-details/1">
       <img
         src="https://m.media-amazon.com/images/M/MV5BZDAzN2FhMTgtMzg5YS00ZDFkLWFiMTUtZTVmMzk4ZjEyMmJmXkEyXkFqcGdeQXVyNjkzMjkzMTY@._V1_.jpg"
         alt=""
