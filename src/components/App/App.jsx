@@ -57,7 +57,7 @@ function App() {
           <ProtectedRoute
             // logged in shows UserPage else shows LoginPage
             exact
-            path="/event-details"
+            path="/event-details/:id"
           >
             
             {!user.id ? <Redirect to="/" /> :  <EventDetails />}
