@@ -1,0 +1,64 @@
+.dashboard{
+    height: 100vh;
+    padding-top: 60px;
+    margin: 0 100px;
+
+}
+.eventcard{
+    width: 250px;
+    border-radius: 15;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 5px;
+    max-width: 300px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #404040;
+    
+}
+.eventcard img{
+    height: 50%;
+    width: 100%;
+    border-radius: 8px;
+    background-size: cover  !important;
+    max-height: 300px;
+    max-width: 300px;
+    background-position: center;
+
+    
+}
+.dates{
+    display: flex;
+    gap: 10px;
+    padding: 0 10px;
+    flex-wrap: wrap;
+
+}
+.dates span{
+    height: 20px;
+    width: max-content;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #75894C;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    
+}
+.eventcard h2{
+    padding-left: 10px;
+    font-size: 1.2rem;
+
+}
+.dashboard h1{
+    margin-top: 3rem;
+
+}
