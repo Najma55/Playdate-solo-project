@@ -1,0 +1,15 @@
+.success-page{
+    gap: 50px;
+
+}
+.success-page-title{
+    display: flex;
+    flex-direction: column;
+    gap: 0px !important;
+}
+.copy{
+    margin: 0 auto;
+}
+h1{
+    line-height: normal;
+}

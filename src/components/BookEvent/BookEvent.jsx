@@ -4,37 +4,24 @@ import "./BookEvent.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Nav from "../Nav/Nav";
+import { useHistory } from "react-router-dom"
 const localizer = momentLocalizer(moment);
 export default function BookEvent() {
   const [eventDates, setEventDates] = useState([
-    {
-      start: moment().toDate(),
-      end: moment().add(0, "days").toDate(),
-      title: "Zoo Tour",
-    },
-    {
-      start: moment().add(3, "days").toDate(),
-      end: moment().add(3, "days").toDate(),
-      title: "Museum Tour",
-    },
-    {
-      start: moment().add(4, "days").toDate(),
-      end: moment().add(4, "days").toDate(),
-      title: "Museum Tour",
-    },
     {
       start: moment().add(10, "days").toDate(),
       end: moment().add(11, "days").toDate(),
       title: "Bounce House Activities",
     },
   ]);
+  const history = useHistory()
 
   return (
     <>
       <Nav />
       <div className="create-event-form book-event-page">
         <div className="e-details">
-          <h1>Event XYZ</h1>
+          <h1>Bounce House Activities</h1>
           <div className="dates eventdates">
             <span>10 May</span>
             <span>14 June</span>
@@ -44,11 +31,20 @@ export default function BookEvent() {
         </div>
         <Calendar
           localizer={localizer}
-          defaultDate={new Date()}
+          defaultDate={new Date(moment().add(10, "days").toDate())}
           defaultView="month"
           events={eventDates}
           style={{ height: "60vh", width: "80vw" }}
         />
+        <div className="event-type-buttons">
+          <button className="repeating-button cancel">Cancel</button>
+          <button
+            onClick={() => history.push("/success")}
+            className="non-repeating-button"
+          >
+            Book Event
+          </button>
+        </div>
       </div>
     </>
   );

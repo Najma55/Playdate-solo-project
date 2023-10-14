@@ -2,4 +2,15 @@
     gap: 50px;
     margin-top: 0 !important;
     padding-top: 100px !important;
+    padding-bottom: 50px;
+}
+.cancel{
+    border: 1px solid #404040;
+    color: #404040;
+    background-color: transparent;
+
+}
+.cancel:hover{
+    color: #404040;
+    background-color: transparent;
 }
