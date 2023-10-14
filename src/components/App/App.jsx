@@ -11,6 +11,7 @@ import "./App.css";
 import Dashboard from "../Dashboard/Dashboard";
 import EventDetails from "../EventDetails/EventDetails";
 import CreateEvent from "../CreateEvent/CreateEvent";
+import InvitePage from "../InvitePage/InvitePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +70,15 @@ function App() {
           >
             
             {user.role !=="admin" ? <Redirect to="/dashboard" /> :  <CreateEvent />}
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            // logged in shows UserPage else shows LoginPage
+            exact
+            path="/invitepage"
+          >
+            
+            {!user.id ? <Redirect to="/" /> :  <InvitePage />}
           </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}
