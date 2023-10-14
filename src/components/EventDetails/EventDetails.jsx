@@ -1,7 +1,9 @@
 import React from "react";
 import Nav from "../Nav/Nav";
 import "./EventDetails.css"
+import { useHistory } from "react-router-dom"
 export default function EventDetails() {
+    const history =useHistory()
   return (
     <>
       <Nav />
@@ -17,7 +19,7 @@ export default function EventDetails() {
             </div>
             <p>3421 Kings St</p>
             <p>60 parents going</p>
-            <button className="book">Book</button>
+            <button onClick={()=>history.push("/book-event/"+1)} className="book">Book</button>
           </div>
         </div>
         <div className="parents">

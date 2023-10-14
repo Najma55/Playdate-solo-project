@@ -17,7 +17,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import EventDetails from "../EventDetails/EventDetails";
 import CreateEvent from "../CreateEvent/CreateEvent";
 import InvitePage from "../InvitePage/InvitePage";
-
+import BookEvent from "../BookEvent/BookEvent";
 function App() {
   const dispatch = useDispatch();
 
@@ -89,9 +89,17 @@ function App() {
           >
             {!user.id ? <Redirect to="/" /> : <InvitePage />}
           </ProtectedRoute>
+          <ProtectedRoute
+            // logged in shows CreateEvent else shows LoginPage
+            exact
+            path="/book-event/:id"
+          >
+            {!user.id ? <Redirect to="/" /> : <BookEvent />}
+          </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
+
             <h1>404</h1>
           </Route>
         </Switch>
