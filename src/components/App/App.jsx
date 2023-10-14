@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { HashRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import {
+  HashRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -52,24 +57,29 @@ function App() {
             exact
             path="/dashboard"
           >
-            
-            {!user.id ? <Redirect to="/" /> :  <Dashboard />}
+            {!user.id ? <Redirect to="/" /> : <Dashboard />}
           </ProtectedRoute>
           <ProtectedRoute
             // logged in shows UserPage else shows LoginPage
             exact
             path="/event-details/:id"
           >
-            
-            {!user.id ? <Redirect to="/" /> :  <EventDetails />}
+            {!user.id ? <Redirect to="/" /> : <EventDetails />}
           </ProtectedRoute>
-          <ProtectedRoute
+          {/* <ProtectedRoute
             // logged in shows UserPage else shows LoginPage
             exact
             path="/create-event"
           >
             
             {user.role !=="admin" ? <Redirect to="/dashboard" /> :  <CreateEvent />}
+          </ProtectedRoute> */}
+          <ProtectedRoute
+            // logged in shows CreateEvent else shows LoginPage
+            exact
+            path="/create-event"
+          >
+            {!user.id ? <Redirect to="/" /> : <CreateEvent />}
           </ProtectedRoute>
 
           <ProtectedRoute
@@ -77,8 +87,7 @@ function App() {
             exact
             path="/invitepage"
           >
-            
-            {!user.id ? <Redirect to="/" /> :  <InvitePage />}
+            {!user.id ? <Redirect to="/" /> : <InvitePage />}
           </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}

@@ -1,0 +1,58 @@
+.create-event-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .create-event-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .input-field {
+    margin: 10px;
+  }
+  
+  .input-field input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .event-type-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .repeating-button,
+  .non-repeating-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color:#75894C;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 10px;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .repeating-button:hover,
+  .non-repeating-button:hover {
+    background-color:#446411;
+  }
+  .create-event-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #2E431D; /* Set the text color to a dark shade */
+  }
+  
+ 
