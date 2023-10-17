@@ -64,18 +64,15 @@ export function formatDateToShortMonthString(inputDate) {
 
   return `${day} ${month}`;
 }
-function EventCard({ name, dates,id,image}) {
+function EventCard({ name, dates, id, image }) {
   return (
-    <Link className="eventcard" to={"/event-details/"+id}>
-      <img
-        src={image}
-        alt=""
-        height={300}
-        width={300}
-      />
+    <Link className="eventcard" to={"/event-details/" + id}>
+      <img src={image} alt="" height={300} width={300} />
       <h2>{name}</h2>
       <div className="dates">
-        {dates.map((date) => <span key={date}>{formatDateToShortMonthString(new Date(date))}</span>)}
+        {dates.map((date) => (
+          <span key={date}>{formatDateToShortMonthString(new Date(date))}</span>
+        ))}
       </div>
     </Link>
   );

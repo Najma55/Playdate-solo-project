@@ -58,7 +58,11 @@ export default function EventDetails() {
         </div>
         <div className="parents">
           {parentsgoing?.map((parent) => (
-            <Parentgoing key={parent.id} name={parent.name} dates={eventdetails["non-repeating-dates"]}/>
+            <Parentgoing
+              key={parent.id}
+              name={parent.name}
+              dates={eventdetails["non-repeating-dates"]}
+            />
           ))}
         </div>
       </div>

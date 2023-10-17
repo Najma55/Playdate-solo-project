@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Nav() {
   const user = useSelector((store) => store.user);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <div className="nav">
@@ -14,7 +14,7 @@ function Nav() {
       </Link>
       <div className="userdetails">
         <div className="parentdetails">
-        <img
+          <img
             src="https://play-lh.googleusercontent.com/7Ak4Ye7wNUtheIvSKnVgGL_OIZWjGPZNV6TP_3XLxHC-sDHLSE45aDg41dFNmL5COA"
             alt=""
             height={30}
@@ -23,8 +23,7 @@ function Nav() {
           <h2>{user?.name}</h2>
         </div>
         <div className="logout">
-          <span onClick={()=>dispatch({type:"LOGOUT"})}>Log Out</span>
-         
+          <span onClick={() => dispatch({ type: "LOGOUT" })}>Log Out</span>
         </div>
       </div>
     </div>

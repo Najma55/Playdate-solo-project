@@ -1,16 +1,19 @@
-.success-page{
+.success-page {
     gap: 50px;
     margin-top: 55px;
 
 }
-.success-page-title{
+
+.success-page-title {
     display: flex;
     flex-direction: column;
     gap: 0px !important;
 }
-.copy{
+
+.copy {
     margin: 0 auto;
 }
-h1{
+
+h1 {
     line-height: normal;
 }

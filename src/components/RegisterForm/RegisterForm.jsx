@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function RegisterForm() {
-  const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
@@ -12,11 +12,11 @@ function RegisterForm() {
     event.preventDefault();
 
     dispatch({
-      type: 'REGISTER',
+      type: "REGISTER",
       payload: {
         username,
         name,
-        password
+        password,
       },
     });
   }; // end registerUser

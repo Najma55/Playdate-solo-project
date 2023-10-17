@@ -3,13 +3,13 @@ import Nav from "../Nav/Nav";
 import "./CreateEvent.css";
 import DatePicker from "react-multi-date-picker";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
 
 export default function CreateEvent() {
   const [showDateSelector, setShowDateSelector] = useState(false);
   const [eventName, setEventName] = useState("");
   const [address, setAddress] = useState("");
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   const today = new Date();
   const tomorrow = new Date();
@@ -25,11 +25,11 @@ export default function CreateEvent() {
       image:
         "https://m.media-amazon.com/images/M/MV5BZDAzN2FhMTgtMzg5YS00ZDFkLWFiMTUtZTVmMzk4ZjEyMmJmXkEyXkFqcGdeQXVyNjkzMjkzMTY@._V1_.jpg",
       name: eventName,
-      // convert all the dates in values array from date time stamp to an actual date. 
-      nonRepeatingDates: values.map((date)=>new Date(date)),
+      // convert all the dates in values array from date time stamp to an actual date.
+      nonRepeatingDates: values.map((date) => new Date(date)),
     };
-    dispatch({type:"CREATE_EVENT", payload:newEventDetails})
-    history.push("/dashboard")
+    dispatch({ type: "CREATE_EVENT", payload: newEventDetails });
+    history.push("/dashboard");
   };
   return (
     <div>

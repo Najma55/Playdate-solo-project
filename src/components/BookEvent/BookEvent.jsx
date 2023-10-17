@@ -52,10 +52,10 @@ export default function BookEvent() {
       type: "BOOK_EVENT",
       payload: {
         userID: user.id,
-        eventid:params.id
+        eventid: params.id,
       },
     });
-    history.push("/success")
+    history.push("/success");
   };
 
   return (
@@ -99,7 +99,7 @@ export default function BookEvent() {
         <div className="event-type-buttons">
           <button className="repeating-button cancel">Cancel</button>
           <button
-            onClick={() =>bookThisEvent()}
+            onClick={() => bookThisEvent()}
             className="non-repeating-button"
           >
             Book Event

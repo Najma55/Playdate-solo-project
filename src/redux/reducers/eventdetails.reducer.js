@@ -1,8 +1,8 @@
 const eventdetailsReducer = (state = null, action) => {
   switch (action.type) {
-    case 'SET_EVENT_DETAILS':
+    case "SET_EVENT_DETAILS":
       return action.payload;
-    case 'UNSET_EVENT_DETAILS':
+    case "UNSET_EVENT_DETAILS":
       return null;
     default:
       return state;

@@ -1,10 +1,11 @@
-.dashboard{
+.dashboard {
     height: 100vh;
     padding-top: 60px;
     margin: 0 100px;
 
 }
-.eventcard{
+
+.eventcard {
     width: 250px;
     border-radius: 15;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -14,27 +15,30 @@
     text-decoration: none;
     color: #404040;
     background-color: #75894C;
-    
+
 }
-.eventcard img{
+
+.eventcard img {
     height: 50%;
     width: 100%;
     border-radius: 8px;
-    background-size: cover  !important;
+    background-size: cover !important;
     max-height: 300px;
     max-width: 300px;
     background-position: center;
 
-    
+
 }
-.dates{
+
+.dates {
     display: flex;
     gap: 10px;
     padding: 0 10px;
     flex-wrap: wrap;
 
 }
-.dates span{
+
+.dates span {
     height: 20px;
     width: max-content;
     padding: 5px 10px;
@@ -48,22 +52,26 @@
     font-size: 0.8rem;
 
 }
-.cards{
+
+.cards {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    
+
 }
-.eventcard h2{
+
+.eventcard h2 {
     padding-left: 10px;
     font-size: 1.2rem;
 
 }
-.dashboard h1{
+
+.dashboard h1 {
     margin-top: 3rem;
 
 }
-.admin-create-button{
+
+.admin-create-button {
     position: fixed;
     top: 50px;
     right: 0;

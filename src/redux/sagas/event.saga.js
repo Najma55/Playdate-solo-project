@@ -7,14 +7,13 @@ function* createEvent(action) {
     yield axios.post("/api/event/create-event", action.payload);
   } catch (error) {
     console.log("Error with user create event:", error);
-    
   }
 }
 function* fetchAllEvents() {
   // get all events from the DB
   try {
     const events = yield axios.get("/api/event/all");
-    
+
     yield put({ type: "SET_EVENTS", payload: events.data });
   } catch {
     console.log("get all error");
@@ -23,8 +22,10 @@ function* fetchAllEvents() {
 function* fetchAllParentsGoing(action) {
   // get all events from the DB
   try {
-    const parents = yield axios.get("/api/event/parents-going/"+action.payload);
-    
+    const parents = yield axios.get(
+      "/api/event/parents-going/" + action.payload
+    );
+
     yield put({ type: "SET_PARENTS_GOING", payload: parents.data });
   } catch {
     console.log("get all error");
@@ -32,10 +33,12 @@ function* fetchAllParentsGoing(action) {
 }
 function* bookEvent(action) {
   try {
-    yield axios.post("/api/event/book/"+ action.payload.eventid ,action.payload);
+    yield axios.post(
+      "/api/event/book/" + action.payload.eventid,
+      action.payload
+    );
   } catch (error) {
     console.log("Error with user create event:", error);
-    
   }
 }
 

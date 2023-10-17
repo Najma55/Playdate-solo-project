@@ -5,10 +5,11 @@ import Nav from "../Nav/Nav";
 export default function InvitePage() {
   return (
     <div className="content-wrapper">
-        <Nav/>
+      <Nav />
       <div className="invitation-details">
         <h4>
-          You have been invited by parent x to attend event y with them on 01/05/24
+          You have been invited by parent x to attend event y with them on
+          01/05/24
         </h4>
       </div>
       <button className="joinbutton">Join Them</button>

@@ -1,85 +1,90 @@
 .create-event-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    text-align: center;
-    padding-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  text-align: center;
+  padding-top: 200px;
 
-  }
-  
-  .create-event-form h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .input-field {
-    margin: 10px;
-    width: 400px;
-  }
-  
-  .input-field input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  .event-type-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  }
-  
-  .repeating-button,
-  .non-repeating-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color:#75894C;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 0 10px;
-    text-align: center;
-    text-decoration: none;
-  }
-  .create-event-button{
-    width: 200px;
-    margin-top: 50px;
+}
 
-  }
+.create-event-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
 
-  .repeating-button:hover,
-  .non-repeating-button:hover {
-    background-color:#446411;
-  }
-  .create-event-form h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #2E431D; /* Set the text color to a dark shade */
-  }
-  .custom-input{
-    width: 500px;
-    height: 45px;
-    border-radius: 8px;
-    padding-left: 8px;
-  }
- .rmdp-calendar  {
-    
-    
- }
- .rmdp-week-day{
-    width: 70px !important;
-    height: 70px !important;
- }
- button:disabled{
-    opacity: 0.5;
-    cursor: default;
- }
- button:disabled:hover{
-    background-color: #75894C;
- }
+.input-field {
+  margin: 10px;
+  width: 400px;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.event-type-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.repeating-button,
+.non-repeating-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #75894C;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 10px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.create-event-button {
+  width: 200px;
+  margin-top: 50px;
+
+}
+
+.repeating-button:hover,
+.non-repeating-button:hover {
+  background-color: #446411;
+}
+
+.create-event-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2E431D;
+  /* Set the text color to a dark shade */
+}
+
+.custom-input {
+  width: 500px;
+  height: 45px;
+  border-radius: 8px;
+  padding-left: 8px;
+}
+
+.rmdp-calendar {}
+
+.rmdp-week-day {
+  width: 70px !important;
+  height: 70px !important;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button:disabled:hover {
+  background-color: #75894C;
+}
