@@ -172,12 +172,60 @@ VALUES ( $1, $2, $3);
 // Get event details. Expect event-ID in the req.params.
 router.get("/details/:eventid", rejectUnauthenticated, (req, res) => {
   let eventid = req.params.eventid;
+
   const queryText = `
   SELECT * FROM "event" WHERE "id" = $1;
   `;
 
   pool
     .query(queryText, [eventid])
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      console.log(`Error making query ${queryText}`, err);
+      res.sendStatus(500);
+    });
+});
+router.get("/all", rejectUnauthenticated, (req, res) => {
+  const queryText = `
+  SELECT * FROM "event";
+  `;
+
+  pool
+    .query(queryText)
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      console.log(`Error making query ${queryText}`, err);
+      res.sendStatus(500);
+    });
+});
+
+router.get("/parents-going/:eventID", rejectUnauthenticated, (req, res) => {
+  const queryText = `
+  SELECT "user".*
+    FROM "user"
+    JOIN "booking" ON "user"."id" = "booking"."user-id"
+    WHERE "booking"."event-id" = $1
+
+    UNION
+
+    SELECT "user".*
+    FROM "user"
+    JOIN "invitee" ON "user"."id" = "invitee"."invited-parent-id"
+    WHERE "invitee"."event-id" = $1
+    AND "user"."id" NOT IN (
+        SELECT "user"."id"
+        FROM "user"
+        JOIN "booking" ON "user"."id" = "booking"."user-id"
+        WHERE "booking"."event-id" = $1
+    );
+  `;
+
+  pool
+    .query(queryText, [req.params.eventID])
     .then((result) => {
       res.status(200).json(result.rows);
     })
