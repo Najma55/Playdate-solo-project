@@ -28,8 +28,9 @@
   }
   
   body {
-    background-color: #E3E8D8; /* Light Gray */
-    /* Add any other body styles you need */
+    background-color:#C9D3C1;
+    ; 
+    
   }
   
   .invitation-details {
@@ -49,4 +50,6 @@
     text-align: center;
     font-style: italic;
   }
+  
+ 
   

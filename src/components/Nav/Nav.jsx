@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Nav.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Nav() {
   const user = useSelector((store) => store.user);
+  const dispatch = useDispatch()
 
   return (
     <div className="nav">
@@ -19,10 +20,10 @@ function Nav() {
             height={30}
             width={30}
           />
-          <h2>Parent name</h2>
+          <h2>{user?.name}</h2>
         </div>
         <div className="logout">
-          <span>Log Out</span>
+          <span onClick={()=>dispatch({type:"LOGOUT"})}>Log Out</span>
          
         </div>
       </div>
