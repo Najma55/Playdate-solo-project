@@ -30,10 +30,20 @@ function* fetchAllParentsGoing(action) {
     console.log("get all error");
   }
 }
+function* bookEvent(action) {
+  try {
+    yield axios.post("/api/event/book/"+ action.payload.eventid ,action.payload);
+  } catch (error) {
+    console.log("Error with user create event:", error);
+    
+  }
+}
+
 function* eventSaga() {
   yield takeLatest("CREATE_EVENT", createEvent);
   yield takeLatest("FETCH_EVENTS", fetchAllEvents);
   yield takeLatest("FETCH_PARENTS_GOING", fetchAllParentsGoing);
+  yield takeLatest("BOOK_EVENT", bookEvent);
 }
 
 export default eventSaga;

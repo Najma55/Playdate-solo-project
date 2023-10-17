@@ -16,6 +16,7 @@ export default function BookEvent() {
   const dispatch = useDispatch();
   const eventdetails = useSelector((store) => store.eventdetails);
   const params = useParams();
+  const [selectedEventDates, setSelectedEventDates] = useState([]);
 
   useEffect(() => {
     dispatch({ type: "FETCH_EVENT_DETAILS", payload: params.id });
@@ -37,6 +38,26 @@ export default function BookEvent() {
     }
   }, [eventdetails]);
 
+  const selectEventDate = (event) => {
+    // This function is called when an event date is selected. it is used for showing the user the dates they have selected for the event.
+    if (
+      selectedEventDates.filter((e) => e.start === event.start).length === 0
+    ) {
+      setSelectedEventDates([...selectedEventDates, event]);
+    }
+  };
+  const user = useSelector((store) => store.user);
+  const bookThisEvent = () => {
+    dispatch({
+      type: "BOOK_EVENT",
+      payload: {
+        userID: user.id,
+        eventid:params.id
+      },
+    });
+    history.push("/success")
+  };
+
   return (
     <>
       <Nav />
@@ -55,16 +76,30 @@ export default function BookEvent() {
           <p>{eventdetails?.address}</p>
         </div>
         <Calendar
+          view="month"
+          onSelectEvent={(event) => selectEventDate(event)}
           localizer={localizer}
           defaultDate={new Date(moment().add(10, "days").toDate())}
           defaultView="month"
           events={eventDates}
           style={{ height: "60vh", width: "80vw" }}
         />
+        <div>
+          <p>Your Selected Dates Are</p>
+          {selectedEventDates && (
+            <div className="dates eventdates">
+              {selectedEventDates?.map((date) => (
+                <span key={date}>
+                  {formatDateToShortMonthString(new Date(date?.start))}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
         <div className="event-type-buttons">
           <button className="repeating-button cancel">Cancel</button>
           <button
-            onClick={() => history.push("/success")}
+            onClick={() =>bookThisEvent()}
             className="non-repeating-button"
           >
             Book Event
