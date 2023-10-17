@@ -4,30 +4,55 @@ import "./BookEvent.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Nav from "../Nav/Nav";
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { formatDateToShortMonthString } from "../Dashboard/Dashboard";
+import { useParams } from "react-router-dom";
 const localizer = momentLocalizer(moment);
 export default function BookEvent() {
-  const [eventDates, setEventDates] = useState([
-    {
-      start: moment().add(10, "days").toDate(),
-      end: moment().add(11, "days").toDate(),
-      title: "Bounce House Activities",
-    },
-  ]);
-  const history = useHistory()
+  const [eventDates, setEventDates] = useState([]);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const eventdetails = useSelector((store) => store.eventdetails);
+  const params = useParams();
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_EVENT_DETAILS", payload: params.id });
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Use effect for creating event dates for the calendar.
+    if (eventdetails) {
+      setEventDates(
+        eventdetails["non-repeating-dates"].map((date) => {
+          // create an event object for the calendar to show the event.
+          return {
+            start: moment(new Date(date)),
+            end: moment(new Date(date)),
+            title: eventdetails.name,
+          };
+        })
+      );
+    }
+  }, [eventdetails]);
 
   return (
     <>
       <Nav />
       <div className="create-event-form book-event-page">
         <div className="e-details">
-          <h1>Bounce House Activities</h1>
-          <div className="dates eventdates">
-            <span>10 May</span>
-            <span>14 June</span>
-            <span>12 August</span>
-          </div>
-          <p>2425 50th St, Minneapolis, Minnesota</p>
+          <h1>{eventdetails?.name}</h1>
+          {eventdetails && (
+            <div className="dates eventdates">
+              {eventdetails["non-repeating-dates"]?.map((date) => (
+                <span key={date}>
+                  {formatDateToShortMonthString(new Date(date))}
+                </span>
+              ))}
+            </div>
+          )}
+          <p>{eventdetails?.address}</p>
         </div>
         <Calendar
           localizer={localizer}

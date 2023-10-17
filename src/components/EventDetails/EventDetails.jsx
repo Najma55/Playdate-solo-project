@@ -49,7 +49,7 @@ export default function EventDetails() {
             <p>{eventdetails?.address}</p>
             <p>{parentsgoing?.length} parents going</p>
             <button
-              onClick={() => history.push("/book-event/" + 1)}
+              onClick={() => history.push("/book-event/" + params.id)}
               className="book"
             >
               Book
