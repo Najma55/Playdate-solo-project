@@ -61,7 +61,8 @@ export default function EventDetails() {
             <Parentgoing
               key={parent.id}
               name={parent.name}
-              dates={eventdetails["non-repeating-dates"]}
+              // Pass the dates that the parents are going to the events. Handle case where some parents don't have the coloumn.
+              dates={parent?.going_dates ?? []}
             />
           ))}
         </div>
