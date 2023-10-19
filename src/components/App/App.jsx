@@ -83,13 +83,13 @@ function App() {
             {!user.id ? <Redirect to="/" /> : <CreateEvent />}
           </ProtectedRoute>
 
-          <ProtectedRoute
+          <Route
             // logged in shows UserPage else shows LoginPage
             exact
-            path="/invitepage"
+            path="/invite/:invitecode"
           >
-            {!user.id ? <Redirect to="/" /> : <InvitePage />}
-          </ProtectedRoute>
+             <InvitePage />
+          </Route>
           <ProtectedRoute
             // logged in shows CreateEvent else shows LoginPage
             exact
@@ -100,7 +100,7 @@ function App() {
           <ProtectedRoute
             // logged in shows CreateEvent else shows LoginPage
             exact
-            path="/success/"
+            path="/success/:invitelink"
           >
             {!user.id ? <Redirect to="/" /> : <SuccessPage />}
           </ProtectedRoute>
