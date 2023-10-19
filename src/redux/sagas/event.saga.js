@@ -33,12 +33,35 @@ function* fetchAllParentsGoing(action) {
 }
 function* bookEvent(action) {
   try {
-    yield axios.post(
+    const response = yield axios.post(
       "/api/event/book/" + action.payload.eventid,
       action.payload
     );
+    yield put({
+      type: "SET_INVITE_LINK",
+      payload: response.data["invite-link"],
+    });
   } catch (error) {
     console.log("Error with user create event:", error);
+  }
+}
+function* acceptInvite(action) {
+  try {
+    const response = yield axios.post("/api/event/accept/" + action.payload);
+  } catch (error) {
+    console.log("Error with user create event:", error);
+  }
+}
+function* fetchInviteDetails(action) {
+  // get all events from the DB
+  try {
+    const inviteDetails = yield axios.get(
+      "/api/event/invite/" + action.payload
+    );
+
+    yield put({ type: "SET_INVITE_DETAILS", payload: inviteDetails.data });
+  } catch {
+    console.log("get all error");
   }
 }
 
@@ -47,6 +70,8 @@ function* eventSaga() {
   yield takeLatest("FETCH_EVENTS", fetchAllEvents);
   yield takeLatest("FETCH_PARENTS_GOING", fetchAllParentsGoing);
   yield takeLatest("BOOK_EVENT", bookEvent);
+  yield takeLatest("FETCH_INVITE_DETAILS", fetchInviteDetails);
+  yield takeLatest("ACCEPT_INVITE", acceptInvite);
 }
 
 export default eventSaga;

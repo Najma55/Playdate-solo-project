@@ -114,14 +114,15 @@ router.post("/book/:eventid", rejectUnauthenticated, (req, res) => {
   let eventid = req.params.eventid;
   const invitelink = generateUniqueCode();
   const queryText = `
-  INSERT INTO "booking" ("user-id", "event-id", "invite-link")
-VALUES ( $1, $2, $3);
+  INSERT INTO "booking" ("user-id", "event-id", "invite-link", "going_dates")
+VALUES ( $1, $2, $3, $4) RETURNING "invite-link";
   `;
 
   pool
-    .query(queryText, [req.body.userID, eventid, invitelink])
+    .query(queryText, [req.body.userID, eventid, invitelink, req.body.going_dates])
     .then((result) => {
-      res.sendStatus(200);
+      console.log(result);
+      res.status(201).json(result.rows[0]);
     })
     .catch((err) => {
       console.log(`Error making query ${queryText}`, err);
@@ -130,17 +131,17 @@ VALUES ( $1, $2, $3);
 });
 
 // Get invite details. Expect invite code in the req.params.
-router.get("/invite/:invitecode", rejectUnauthenticated, (req, res) => {
+router.get("/invite/:invitecode", (req, res) => {
   let invitecode = req.params.invitecode;
 
   const queryText = `
-  SELECT "user"."name" AS "parentName", "event"."name" AS "eventName", "address", "non-repeating-dates", "invite-link", "user"."id" AS "userid", "event"."id" AS "eventid" FROM "booking" JOIN "user" ON "user"."id" = "booking"."user-id" JOIN "event" ON "event"."id" = "booking"."event-id" WHERE "invite-link" = $1;
+  SELECT "user"."name" AS "parentName", "event"."name" AS "eventName", "address", "non-repeating-dates", "invite-link", "user"."id" AS "userid", "event"."id" AS "eventid", "booking"."going_dates" FROM "booking" JOIN "user" ON "user"."id" = "booking"."user-id" JOIN "event" ON "event"."id" = "booking"."event-id" WHERE "invite-link" = $1;
   `;
 
   pool
     .query(queryText, [invitecode])
     .then((result) => {
-      res.status(200).json(result.rows);
+      res.status(200).json(result.rows[0]);
     })
     .catch((err) => {
       console.log(`Error making query ${queryText}`, err);
@@ -149,25 +150,38 @@ router.get("/invite/:invitecode", rejectUnauthenticated, (req, res) => {
 });
 
 // Accept invite. Expect event-ID in the req.params and user-ID in the req.body.
-router.post("/accept/:eventid", rejectUnauthenticated, (req, res) => {
-  if (!req.body.parentID || !req.body.invitedParentID) {
-    return res.status(400).send("missing field");
-  }
-  let eventid = req.params.eventid;
-  const queryText = `
-  INSERT INTO "invitee" ("parent-id", "invited-parent-id","event-id")
-VALUES ( $1, $2, $3);
+router.post("/accept/:invitecode", rejectUnauthenticated, (req, res) => {
+  //We first start by getting the invite details by using the invite code. 
+  const queryGetInvite = `
+  SELECT "user"."name" AS "parentName", "event"."name" AS "eventName", "address", "non-repeating-dates", "invite-link", "user"."id" AS "userid", "event"."id" AS "eventid", "booking"."going_dates" FROM "booking" JOIN "user" ON "user"."id" = "booking"."user-id" JOIN "event" ON "event"."id" = "booking"."event-id" WHERE "invite-link" = $1;
   `;
 
   pool
-    .query(queryText, [req.body.parentID, req.body.invitedParentID, eventid])
+    .query(queryGetInvite, [req.params.invitecode])
     .then((result) => {
-      res.sendStatus(200);
+      // At this point, we have the invite details as result.rows[0]
+      let eventid = result.rows[0].eventid;
+      // With the invite details we create an invitee record
+      const queryText = `
+      INSERT INTO "invitee" ("parent-id", "invited-parent-id","event-id")
+    VALUES ( $1, $2, $3);
+      `;
+    
+      pool
+        .query(queryText, [result.rows[0].userid, req.user.id, eventid])
+        .then((result) => {
+          res.sendStatus(200);
+        })
+        .catch((err) => {
+          console.log(`Error making query ${queryText}`, err);
+          res.sendStatus(500);
+        });
     })
     .catch((err) => {
-      console.log(`Error making query ${queryText}`, err);
+      console.log(`Error making query`, err);
       res.sendStatus(500);
     });
+  
 });
 // Get event details. Expect event-ID in the req.params.
 router.get("/details/:eventid", rejectUnauthenticated, (req, res) => {
@@ -205,14 +219,14 @@ router.get("/all", rejectUnauthenticated, (req, res) => {
 
 router.get("/parents-going/:eventID", rejectUnauthenticated, (req, res) => {
   const queryText = `
-  SELECT "user".*
+  SELECT "user".*, "booking"."going_dates"
     FROM "user"
     JOIN "booking" ON "user"."id" = "booking"."user-id"
     WHERE "booking"."event-id" = $1
 
     UNION
 
-    SELECT "user".*
+    SELECT "user".*, NULL AS "going_dates"
     FROM "user"
     JOIN "invitee" ON "user"."id" = "invitee"."invited-parent-id"
     WHERE "invitee"."event-id" = $1
