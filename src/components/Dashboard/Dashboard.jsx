@@ -17,6 +17,16 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch({ type: "FETCH_EVENTS" });
   }, [dispatch]);
+  useEffect(() => {
+    //Check if we have invite in the local storage. 
+    if (localStorage.getItem("invitecode")){
+      const invitecode=localStorage.getItem("invitecode")
+      console.log(invitecode);
+      dispatch({ type: "ACCEPT_INVITE", payload:invitecode});
+      localStorage.removeItem("invitecode")
+      
+    }
+  }, []);
   return (
     <div className="dashboard">
       <Nav />
