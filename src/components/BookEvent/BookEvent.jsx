@@ -15,6 +15,7 @@ export default function BookEvent() {
   const history = useHistory();
   const dispatch = useDispatch();
   const eventdetails = useSelector((store) => store.eventdetails);
+  const inviteLink = useSelector((store) => store.inviteLink);
   const params = useParams();
   const [selectedEventDates, setSelectedEventDates] = useState([]);
 
@@ -53,10 +54,18 @@ export default function BookEvent() {
       payload: {
         userID: user.id,
         eventid: params.id,
+        //take the selected events and grab the start date. 
+        going_dates:selectedEventDates.map((date)=>new Date(date.start))
       },
     });
-    history.push("/success");
+    // history.push("/success");
   };
+  useEffect(()=>{
+    //listen for invite link once we have it redirect user to sucess page. 
+    if (inviteLink){
+      history.push("/success/"+inviteLink)
+    }
+  },[inviteLink])
 
   return (
     <>
