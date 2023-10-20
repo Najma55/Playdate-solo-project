@@ -64,6 +64,23 @@ function* fetchInviteDetails(action) {
     console.log("get all error");
   }
 }
+function* editEvent(action) {
+  // get all events from the DB
+  try {
+    yield axios.put("/api/event/" + action.payload.id, action.payload);
+  } catch {
+    console.log("get all error");
+  }
+}
+function* deleteEvent(action) {
+  // get all events from the DB
+  try {
+    yield axios.delete("/api/event/" + action.payload.id);
+  } catch {
+    console.log("get all error");
+  }
+}
+
 
 function* eventSaga() {
   yield takeLatest("CREATE_EVENT", createEvent);
@@ -72,6 +89,8 @@ function* eventSaga() {
   yield takeLatest("BOOK_EVENT", bookEvent);
   yield takeLatest("FETCH_INVITE_DETAILS", fetchInviteDetails);
   yield takeLatest("ACCEPT_INVITE", acceptInvite);
+  yield takeLatest("EDIT_EVENT", editEvent);
+  yield takeLatest("DELETE_EVENT", deleteEvent);
 }
 
 export default eventSaga;

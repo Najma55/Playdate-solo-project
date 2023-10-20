@@ -87,7 +87,7 @@ export default function EventDetails() {
               ))}
             {user?.role === "admin" && (
               <div>
-                <button className="book">Edit</button>{" "}
+                <button onClick={()=>history.push("/create-event?eventid="+params.id)} className="book">Edit</button>{" "}
                 <button className="book">Delete</button>
               </div>
             )}

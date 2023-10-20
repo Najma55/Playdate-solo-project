@@ -1,23 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../Nav/Nav";
 import "./CreateEvent.css";
 import DatePicker from "react-multi-date-picker";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function CreateEvent() {
   const [showDateSelector, setShowDateSelector] = useState(false);
   const [eventName, setEventName] = useState("");
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
-
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const eventid = queryParams.get("eventid");
+  const eventdetails = useSelector((store) => store.eventdetails);
+  console.log(eventdetails);
   const today = new Date();
   const tomorrow = new Date();
   const history = useHistory();
+  const [values, setValues] = useState([today, tomorrow]);
+  useEffect(() => {
+    // Fetch event details if we are on edit mode.
+    if (eventid) {
+      setValues([]);
+      dispatch({ type: "FETCH_EVENT_DETAILS", payload: eventid });
+    }
+  }, [dispatch, eventid]);
+  useEffect(() => {
+    //Prefill event name and address.
+    if (eventdetails) {
+      setValues(
+        eventdetails["non-repeating-dates"].map((date) => new Date(date))
+      );
+      setEventName(eventdetails?.name);
+      setAddress(eventdetails?.address);
+    }
+  }, [eventdetails]);
 
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const [values, setValues] = useState([today, tomorrow]);
   const createEvent = () => {
     console.log("creatEvent");
     const newEventDetails = {
@@ -29,6 +51,20 @@ export default function CreateEvent() {
       nonRepeatingDates: values.map((date) => new Date(date)),
     };
     dispatch({ type: "CREATE_EVENT", payload: newEventDetails });
+    history.push("/dashboard");
+  };
+  const editEvent = () => {
+    console.log("editEvent");
+    const editedEventDetails = {
+      address: address,
+      image:
+        "https://m.media-amazon.com/images/M/MV5BZDAzN2FhMTgtMzg5YS00ZDFkLWFiMTUtZTVmMzk4ZjEyMmJmXkEyXkFqcGdeQXVyNjkzMjkzMTY@._V1_.jpg",
+      name: eventName,
+      // convert all the dates in values array from date time stamp to an actual date.
+      nonRepeatingDates: values.map((date) => new Date(date)),
+      id: eventid,
+    };
+    dispatch({ type: "EDIT_EVENT", payload: editedEventDetails });
     history.push("/dashboard");
   };
   return (
@@ -44,15 +80,15 @@ export default function CreateEvent() {
             onChange={setValues}
           />
           <button
-            onClick={() => createEvent()}
+            onClick={() => (eventid ? editEvent() : createEvent())}
             className="non-repeating-button create-event-button"
           >
-            Create Event
+            {eventid ? "Edit" : "Create"} Event
           </button>
         </div>
       ) : (
         <div className="create-event-form">
-          <h2>Create New Event</h2>
+          <h2>{eventid ? "Edit" : "Create New"} Event</h2>
           <div className="input-field">
             <input
               type="text"
@@ -74,15 +110,26 @@ export default function CreateEvent() {
             />
           </div>
           <div className="event-type-buttons">
-            <button disabled className="repeating-button">
-              Repeating Event
-            </button>
-            <button
-              onClick={() => setShowDateSelector(true)}
-              className="non-repeating-button"
-            >
-              Non-repeating Event
-            </button>
+            {eventid ? (
+              <button
+                onClick={() => setShowDateSelector(true)}
+                className="non-repeating-button"
+              >
+                Continue
+              </button>
+            ) : (
+              <>
+                <button disabled className="repeating-button">
+                  Repeating Event
+                </button>
+                <button
+                  onClick={() => setShowDateSelector(true)}
+                  className="non-repeating-button"
+                >
+                  Non-repeating Event
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
