@@ -75,7 +75,7 @@ function* editEvent(action) {
 function* deleteEvent(action) {
   // get all events from the DB
   try {
-    yield axios.delete("/api/event/" + action.payload.id);
+    yield axios.delete("/api/event/" + action.payload);
   } catch {
     console.log("get all error");
   }

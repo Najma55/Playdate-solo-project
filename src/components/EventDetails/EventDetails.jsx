@@ -45,6 +45,11 @@ export default function EventDetails() {
     setHasCopiedLink(true);
   };
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
+  const deleteEvent = () => {
+  
+    dispatch({ type: "DELETE_EVENT", payload:params.id });
+    history.push("/dashboard");
+  };
   return (
     <>
       <Nav />
@@ -88,7 +93,7 @@ export default function EventDetails() {
             {user?.role === "admin" && (
               <div>
                 <button onClick={()=>history.push("/create-event?eventid="+params.id)} className="book">Edit</button>{" "}
-                <button className="book">Delete</button>
+                <button onClick={()=>deleteEvent()} className="book">Delete</button>
               </div>
             )}
           </div>
