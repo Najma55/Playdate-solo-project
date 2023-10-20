@@ -13,6 +13,7 @@ export default function CreateEvent() {
   const [address, setAddress] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imageLink, setImageLink] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -45,7 +46,7 @@ export default function CreateEvent() {
   tomorrow.setDate(tomorrow.getDate() + 1);
 
   const createEvent = async () => {
-    console.log("creatEvent");
+    setIsLoading(true);
     const uploadedLink = await uploadOne(imageFile);
     const newEventDetails = {
       address: address,
@@ -55,24 +56,30 @@ export default function CreateEvent() {
       nonRepeatingDates: values.map((date) => new Date(date)),
     };
     dispatch({ type: "CREATE_EVENT", payload: newEventDetails });
+    dispatch({ type: "UNSET_EVENT_DETAILS" });
+    setIsLoading(false);
+    window.alert("Event Created!")
     history.push("/dashboard");
   };
-  const editEvent = async() => {
-    console.log("editEvent");
-    let image= imageLink
-    //We check if the user edited the image and then we upload it. 
-    if (imageFile){
-      image=await uploadOne(imageFile)
+  const editEvent = async () => {
+    setIsLoading(true);
+    let image = imageLink;
+    //We check if the user edited the image and then we upload it.
+    if (imageFile) {
+      image = await uploadOne(imageFile);
     }
     const editedEventDetails = {
       address: address,
-      image:image,
+      image: image,
       name: eventName,
       // convert all the dates in values array from date time stamp to an actual date.
       nonRepeatingDates: values.map((date) => new Date(date)),
       id: eventid,
     };
     dispatch({ type: "EDIT_EVENT", payload: editedEventDetails });
+    dispatch({ type: "UNSET_EVENT_DETAILS" });
+    setIsLoading(false);
+    window.alert("Event Edited!")
     history.push("/dashboard");
   };
   return (
@@ -91,7 +98,7 @@ export default function CreateEvent() {
             onClick={() => (eventid ? editEvent() : createEvent())}
             className="non-repeating-button create-event-button"
           >
-            {eventid ? "Edit" : "Create"} Event
+            {isLoading ? "loading..." : eventid ? "Edit Event" : "Create Event"}
           </button>
         </div>
       ) : (
@@ -127,7 +134,7 @@ export default function CreateEvent() {
             />
             {(imageFile || imageLink) && (
               <img
-                src={imageFile? URL.createObjectURL(imageFile):imageLink}
+                src={imageFile ? URL.createObjectURL(imageFile) : imageLink}
                 alt=""
                 height={70}
                 width={70}

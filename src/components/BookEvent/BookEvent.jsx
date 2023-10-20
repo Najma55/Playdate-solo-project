@@ -58,6 +58,7 @@ export default function BookEvent() {
         going_dates:selectedEventDates.map((date)=>new Date(date.start))
       },
     });
+
     // history.push("/success");
   };
   useEffect(()=>{

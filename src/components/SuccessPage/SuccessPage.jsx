@@ -17,7 +17,7 @@ export default function SuccessPage() {
     dispatch({ type: "FETCH_INVITE_DETAILS", payload: params.invitelink });
   }, [dispatch]);
   const copylink = () => {
-    const link = `${process.env.REACT_APP_DOMAIN}/#/invite/${params.invitelink}`;
+    const link = `${process.env.REACT_APP_DOMAIN}/invite/${params.invitelink}`;
     navigator?.clipboard?.writeText(link);
     setHasCopiedLink(true);
   };
