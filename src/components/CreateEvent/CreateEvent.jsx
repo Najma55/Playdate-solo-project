@@ -11,7 +11,8 @@ export default function CreateEvent() {
   const [showDateSelector, setShowDateSelector] = useState(false);
   const [eventName, setEventName] = useState("");
   const [address, setAddress] = useState("");
-  const [imageFile, setImageFile]= useState(null)
+  const [imageFile, setImageFile] = useState(null);
+  const [imageLink, setImageLink] = useState("");
   const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -37,17 +38,18 @@ export default function CreateEvent() {
       );
       setEventName(eventdetails?.name);
       setAddress(eventdetails?.address);
+      setImageLink(eventdetails?.image);
     }
   }, [eventdetails]);
 
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const createEvent = async() => {
+  const createEvent = async () => {
     console.log("creatEvent");
-    const uploadedLink= await uploadOne(imageFile)
+    const uploadedLink = await uploadOne(imageFile);
     const newEventDetails = {
       address: address,
-      image:uploadedLink,
+      image: uploadedLink,
       name: eventName,
       // convert all the dates in values array from date time stamp to an actual date.
       nonRepeatingDates: values.map((date) => new Date(date)),
@@ -55,12 +57,16 @@ export default function CreateEvent() {
     dispatch({ type: "CREATE_EVENT", payload: newEventDetails });
     history.push("/dashboard");
   };
-  const editEvent = () => {
+  const editEvent = async() => {
     console.log("editEvent");
+    let image= imageLink
+    //We check if the user edited the image and then we upload it. 
+    if (imageFile){
+      image=await uploadOne(imageFile)
+    }
     const editedEventDetails = {
       address: address,
-      image:
-        "https://m.media-amazon.com/images/M/MV5BZDAzN2FhMTgtMzg5YS00ZDFkLWFiMTUtZTVmMzk4ZjEyMmJmXkEyXkFqcGdeQXVyNjkzMjkzMTY@._V1_.jpg",
+      image:image,
       name: eventName,
       // convert all the dates in values array from date time stamp to an actual date.
       nonRepeatingDates: values.map((date) => new Date(date)),
@@ -71,7 +77,7 @@ export default function CreateEvent() {
   };
   return (
     <div>
-      <Nav /> 
+      <Nav />
       {showDateSelector ? (
         <div className="create-event-form">
           <h2>Choose The Event Dates</h2>
@@ -111,9 +117,22 @@ export default function CreateEvent() {
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>
-          <div className="input-field event-image" >
-            <input type="file" name="image" id="image" accept="image/*" onChange={(e)=>setImageFile(e.target.files[0])}/>
-            {imageFile&&<img src={URL.createObjectURL(imageFile)} alt="" height={70}width={70} />}
+          <div className="input-field event-image">
+            <input
+              type="file"
+              name="image"
+              id="image"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+            />
+            {(imageFile || imageLink) && (
+              <img
+                src={imageFile? URL.createObjectURL(imageFile):imageLink}
+                alt=""
+                height={70}
+                width={70}
+              />
+            )}
           </div>
           <div className="event-type-buttons">
             {eventid ? (
@@ -143,7 +162,7 @@ export default function CreateEvent() {
   );
 }
 
-// A function that takes a file and uploads it to cloudinary and get back a link. 
+// A function that takes a file and uploads it to cloudinary and get back a link.
 export const uploadOne = async (file) => {
   try {
     const data = new FormData();
