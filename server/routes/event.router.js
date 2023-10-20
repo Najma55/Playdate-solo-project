@@ -219,14 +219,14 @@ router.get("/all", rejectUnauthenticated, (req, res) => {
 
 router.get("/parents-going/:eventID", rejectUnauthenticated, (req, res) => {
   const queryText = `
-  SELECT "user".*, "booking"."going_dates"
+  SELECT "user".*, "booking"."going_dates", "booking"."invite-link" AS "booking_invite_link"
     FROM "user"
     JOIN "booking" ON "user"."id" = "booking"."user-id"
     WHERE "booking"."event-id" = $1
 
     UNION
 
-    SELECT "user".*, NULL AS "going_dates"
+    SELECT "user".*, NULL AS "going_dates", NULL AS "booking_invite_link"
     FROM "user"
     JOIN "invitee" ON "user"."id" = "invitee"."invited-parent-id"
     WHERE "invitee"."event-id" = $1

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav from "../Nav/Nav";
 import "./EventDetails.css";
 import { useHistory } from "react-router-dom";
@@ -13,7 +13,24 @@ export default function EventDetails() {
 
   const eventdetails = useSelector((store) => store.eventdetails);
   const parentsgoing = useSelector((store) => store.parentsgoing);
+  const user = useSelector((store) => store.user);
+  const [hasBooked, setHasBooked] = useState(null);
+  const [inviteLink, setInviteLink] = useState("");
   console.log(parentsgoing);
+  useEffect(() => {
+    //Check if current parent is present in parents going array.
+    if (parentsgoing?.length > 0 && user?.id) {
+      if (parentsgoing.find((parent) => parent.id === user.id)) {
+        setInviteLink(
+          parentsgoing.find((parent) => parent.id === user.id)
+            .booking_invite_link
+        );
+        setHasBooked(true);
+      } else {
+        setHasBooked(false);
+      }
+    }
+  }, [parentsgoing, user]);
 
   useEffect(() => {
     dispatch({ type: "FETCH_EVENT_DETAILS", payload: params.id });
@@ -22,6 +39,12 @@ export default function EventDetails() {
   useEffect(() => {
     dispatch({ type: "FETCH_PARENTS_GOING", payload: params.id });
   }, [dispatch]);
+  const copylink = () => {
+    const link = `${process.env.REACT_APP_DOMAIN}/#/invite/${inviteLink}`;
+    navigator?.clipboard?.writeText(link);
+    setHasCopiedLink(true);
+  };
+  const [hasCopiedLink, setHasCopiedLink] = useState(false);
   return (
     <>
       <Nav />
@@ -48,12 +71,26 @@ export default function EventDetails() {
             )}
             <p>{eventdetails?.address}</p>
             <p>{parentsgoing?.length} parents going</p>
-            <button
-              onClick={() => history.push("/book-event/" + params.id)}
-              className="book"
-            >
-              Book
-            </button>
+            {hasBooked !== null &&
+              user?.role === "parent" &&
+              (hasBooked ? (
+                <button onClick={() => copylink()} className="book copy">
+                  {hasCopiedLink ? "Copied!" : "Copy Invite Link"}
+                </button>
+              ) : (
+                <button
+                  onClick={() => history.push("/book-event/" + params.id)}
+                  className="book"
+                >
+                  Book
+                </button>
+              ))}
+            {user?.role === "admin" && (
+              <div>
+                <button className="book">Edit</button>{" "}
+                <button className="book">Delete</button>
+              </div>
+            )}
           </div>
         </div>
         <div className="parents">

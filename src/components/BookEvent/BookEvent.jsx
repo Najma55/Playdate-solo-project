@@ -62,7 +62,7 @@ export default function BookEvent() {
   };
   useEffect(()=>{
     //listen for invite link once we have it redirect user to sucess page. 
-    if (inviteLink){
+    if (inviteLink?.lenght>0){
       history.push("/success/"+inviteLink)
     }
   },[inviteLink])
