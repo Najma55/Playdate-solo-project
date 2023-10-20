@@ -76,7 +76,7 @@ export default function EventDetails() {
             )}
             <p>{eventdetails?.address}</p>
             <p>{parentsgoing?.length} parents going</p>
-            {hasBooked !== null &&
+            {
               user?.role === "parent" &&
               (hasBooked ? (
                 <button onClick={() => copylink()} className="book copy">
