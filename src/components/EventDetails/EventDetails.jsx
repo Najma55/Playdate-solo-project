@@ -36,14 +36,14 @@ export default function EventDetails() {
 
   useEffect(() => {
     dispatch({ type: "FETCH_EVENT_DETAILS", payload: params.id });
-    dispatch({ type: "UNSET_INVITE_DETAILS"});
+    dispatch({ type: "UNSET_INVITE_DETAILS" });
   }, [dispatch]);
 
   useEffect(() => {
     dispatch({ type: "FETCH_PARENTS_GOING", payload: params.id });
   }, [dispatch]);
   const copylink = () => {
-    const link = `${process.env.REACT_APP_DOMAIN}/#/invite/${inviteLink}`;
+    const link = `${process.env.REACT_APP_DOMAIN}/invite/${inviteLink}`;
     navigator?.clipboard?.writeText(link);
     setHasCopiedLink(true);
   };
