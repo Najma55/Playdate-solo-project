@@ -5,24 +5,27 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDateToShortMonthString } from "../Dashboard/Dashboard";
-import { useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom";
 
 export default function SuccessPage() {
   const params = useParams();
   const dispatch = useDispatch();
   const invitedetails = useSelector((store) => store.invitedetails);
-  const history= useHistory()
+  const history = useHistory();
   console.log(invitedetails);
   useEffect(() => {
-    dispatch({ type: "FETCH_INVITE_DETAILS", payload: params.invitelink });
-  }, [dispatch]);
+    if (params.invitelink) {
+      dispatch({ type: "FETCH_INVITE_DETAILS", payload: params.invitelink });
+    }
+  }, [dispatch, params.invitelink]);
   const copylink = () => {
     const link = `${process.env.REACT_APP_DOMAIN}/invite/${params.invitelink}`;
     navigator?.clipboard?.writeText(link);
     setHasCopiedLink(true);
   };
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
-
+  console.log(invitedetails);
+  if (!invitedetails) return null;
   return (
     <>
       <Nav />
@@ -44,7 +47,10 @@ export default function SuccessPage() {
           <button onClick={() => copylink()} className="book copy">
             {hasCopiedLink ? "Copied!" : "Copy Invite Link"}
           </button>
-          <button onClick={() => history.push("/dashboard")} className="back">
+          <button
+            onClick={() => (window.location.href = "/dashboard")}
+            className="back"
+          >
             Go Back To DashBoard
           </button>
         </div>

@@ -112,3 +112,13 @@ input {
   margin: 5px;
   margin-bottom: 10px;
 }
+button{
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+}
+button:focus{
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+}

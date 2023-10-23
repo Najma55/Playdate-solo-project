@@ -9,9 +9,9 @@ function Nav() {
 
   return (
     <div className="nav">
-      <Link to="/dashboard">
+      <button onClick={()=>window.location.href="/dashboard"}>
         <img src="/512x512.png" height={40} width={40} alt="" />
-      </Link>
+      </button>
       <div className="userdetails">
         <div className="parentdetails">
           <img

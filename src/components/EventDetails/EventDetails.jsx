@@ -29,11 +29,14 @@ export default function EventDetails() {
       } else {
         setHasBooked(false);
       }
+    } else {
+      setHasBooked(false);
     }
   }, [parentsgoing, user]);
 
   useEffect(() => {
     dispatch({ type: "FETCH_EVENT_DETAILS", payload: params.id });
+    dispatch({ type: "UNSET_INVITE_DETAILS"});
   }, [dispatch]);
 
   useEffect(() => {
@@ -46,10 +49,10 @@ export default function EventDetails() {
   };
   const [hasCopiedLink, setHasCopiedLink] = useState(false);
   const deleteEvent = () => {
-  
-    dispatch({ type: "DELETE_EVENT", payload:params.id });
+    dispatch({ type: "DELETE_EVENT", payload: params.id });
     history.push("/dashboard");
   };
+  if (hasBooked === null) return null;
   return (
     <>
       <Nav />
@@ -76,8 +79,7 @@ export default function EventDetails() {
             )}
             <p>{eventdetails?.address}</p>
             <p>{parentsgoing?.length} parents going</p>
-            {
-              user?.role === "parent" &&
+            {user?.role === "parent" &&
               (hasBooked ? (
                 <button onClick={() => copylink()} className="book copy">
                   {hasCopiedLink ? "Copied!" : "Copy Invite Link"}
@@ -92,16 +94,25 @@ export default function EventDetails() {
               ))}
             {user?.role === "admin" && (
               <div>
-                <button onClick={()=>history.push("/create-event?eventid="+params.id)} className="book">Edit</button>{" "}
-                <button onClick={()=>deleteEvent()} className="book">Delete</button>
+                <button
+                  onClick={() =>
+                    history.push("/create-event?eventid=" + params.id)
+                  }
+                  className="book"
+                >
+                  Edit
+                </button>{" "}
+                <button onClick={() => deleteEvent()} className="book">
+                  Delete
+                </button>
               </div>
             )}
           </div>
         </div>
         <div className="parents">
-          {parentsgoing?.map((parent) => (
+          {parentsgoing?.map((parent, index) => (
             <Parentgoing
-              key={parent.id}
+              key={index}
               name={parent.name}
               // Pass the dates that the parents are going to the events. Handle case where some parents don't have the coloumn.
               dates={parent?.going_dates ?? []}

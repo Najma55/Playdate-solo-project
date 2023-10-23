@@ -5,7 +5,7 @@
 
 }
 
-.eventcard {
+/* .eventcard {
     width: 250px;
     border-radius: 15;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -16,7 +16,7 @@
     color: #404040;
     background-color: #8db838;
 
-}
+} */
 
 .eventcard img {
     height: 50%;
@@ -76,3 +76,15 @@
     top: 50px;
     right: 0;
 }
+.eventcard {
+    width: 250px;
+    border: 2px ridge #000; /* Ridge border with 2px width and black color */
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 5px;
+    max-width: 300px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #404040;
+    background-color: #8db838;
+}
+

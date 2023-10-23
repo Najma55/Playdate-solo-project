@@ -26,6 +26,7 @@ export default function BookEvent() {
   useEffect(() => {
     // Use effect for creating event dates for the calendar.
     if (eventdetails) {
+      console.log(eventdetails);
       setEventDates(
         eventdetails["non-repeating-dates"].map((date) => {
           // create an event object for the calendar to show the event.
@@ -54,19 +55,19 @@ export default function BookEvent() {
       payload: {
         userID: user.id,
         eventid: params.id,
-        //take the selected events and grab the start date. 
-        going_dates:selectedEventDates.map((date)=>new Date(date.start))
+        //take the selected events and grab the start date.
+        going_dates: selectedEventDates.map((date) => new Date(date.start)),
       },
     });
-
-    // history.push("/success");
   };
-  useEffect(()=>{
-    //listen for invite link once we have it redirect user to sucess page. 
-    if (inviteLink?.lenght>0){
-      history.push("/success/"+inviteLink)
+  console.log(inviteLink);
+  useEffect(() => {
+    //listen for invite link once we have it redirect user to sucess page.
+    if (inviteLink?.length > 0) {
+      history.push("/success/" + inviteLink);
     }
-  },[inviteLink])
+  }, [inviteLink]);
+  if (eventDates.length === 0 || !eventdetails) return null;
 
   return (
     <>
@@ -89,7 +90,7 @@ export default function BookEvent() {
           view="month"
           onSelectEvent={(event) => selectEventDate(event)}
           localizer={localizer}
-          defaultDate={new Date(moment().add(10, "days").toDate())}
+          defaultDate={new Date(eventDates[0].start)}
           defaultView="month"
           events={eventDates}
           style={{ height: "60vh", width: "80vw" }}

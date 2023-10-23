@@ -58,8 +58,9 @@ function* fetchInviteDetails(action) {
     const inviteDetails = yield axios.get(
       "/api/event/invite/" + action.payload
     );
-
+      console.log(inviteDetails.data);
     yield put({ type: "SET_INVITE_DETAILS", payload: inviteDetails.data });
+    
   } catch {
     console.log("get all error");
   }
