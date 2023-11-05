@@ -2,7 +2,7 @@
   "name": "prime-solo-project",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://playdate-book-b5c390ebff4f.herokuapp.com",
+  "proxy": "https://playdate-solo-project.vercel.app",
   "engines": {
     "node": "18.x"
   },
