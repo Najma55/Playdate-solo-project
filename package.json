@@ -2,7 +2,7 @@
   "name": "prime-solo-project",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://playdate-solo-project.vercel.app",
+  "proxy": "https://playdate-solo-project-5wm4kz943-najmas-projects-ca794b30.vercel.app",
   "engines": {
     "node": "18.x"
   },
